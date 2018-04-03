@@ -40,22 +40,24 @@ module.exports = {
 		});
 	},
 	getWithComments: function(req, res) {
+		console.log("Trying to get the chosen photo");
 		let photoWithComments = {
-      		user: '',
+      user: '',
 			photo: null,
 			comments: []
-    	};
+      };
 	    db.Photo.findOne({_id: req.params.id})
 			.then(photo =>{
-		        // console.log(photo);
-		        photoWithComments.photo = photo;
-		        // console.log(photoWithComments.photo);
-		        //get all of the photo's comments
-		        db.User.findOne({_id: photo.user[0]}).then(user => {
-					photoWithComments.user = user.email;
-					photoWithComments.comments = getAllComments(photo.comments, 0, photoWithComments, res);
+        // console.log(photo);
+        photoWithComments.photo = photo;
+        // console.log(photoWithComments.photo);
+        //get all of the photo's comments
+        db.User.findOne({_id: photo.user}).then(user => {
+          photoWithComments.user = user.email;
+          // console.log(photo.comments.length);
+        
 					// console.log(photoWithComments.comments.length);
-					res.json(photoWithComments);
+          			getAllComments(photo.comments, 0, photoWithComments, res);
 				})
 			}).catch(err => {
 				console.log(err);
@@ -89,9 +91,11 @@ module.exports = {
 		this.findByLocation(req, res);
 	},
 	addComment: function(req, res) {
-		//get the ID of the user who made the comment
+    //get the ID of the user who made the comment
+    // console.log(req.body);
 		db.User.findOne({email: req.body.email})
 			.then(user => {
+        // console.log(user);
 				var comment = {
 					body: req.body.body,
 					user: user.id
@@ -99,9 +103,10 @@ module.exports = {
 				//create the comment
 				db.Comment.create(comment)
 					.then(newComment => {
-						//add the comment to the photo
+            //add the comment to the photo
+            // console.log(`Here's the new comment that was added: ${newComment}`);
 						db.Photo.findOneAndUpdate(
-							{ id: req.body.photoID },
+							{ _id: req.body.photoID },
 							{ $push: {comments: newComment.id} },
 							{ new: true } //it returns the updated photo, instead of its original state
 						).then(photoWithAddedComment => {
@@ -127,17 +132,38 @@ module.exports = {
 //the object that holds the array to be filled with the comment objects, 
 //and the response to be sent back to the server
 function getAllComments(ids, index, photoWithComments, res){
+  // console.log(photoWithComments);
+  
 	if(index === ids.length){
     // console.log('in if');
     // console.log(photoWithComments.photo.verified);
     // res.json(photoWithComments);
-    return photoWithComments.comments;
+    // console.log(ids);
+    // console.log(`Length: ${photoWithComments.comments.length}`);
+    res.json(photoWithComments);
 	} else{
-		db.Comment.findOne({id: ids[index]})
+		db.Comment.findOne({_id: ids[index]})
 		.then(comment =>{
-      // console.log('in else');
-			photoWithComments.comments.push(comment);
-			getAllComments(ids, index + 1, photoWithComments, res);
+      var commentWithUserName = {
+        "_id": comment._id,
+        "body": comment.body,
+        "user": comment.user,
+        "userName": ''
+      }
+      // console.log(`Before: ${JSON.stringify(commentWithUserName)}`);
+
+      db.User.findOne({_id: comment.user}).then(user => {
+        // console.log(user.email);
+        // var commentWithUserName = comment;
+        // console.log(commentWithUserName);
+        commentWithUserName["userName"] = user.email;
+        // console.log(`After: ${JSON.stringify(commentWithUserName)}`);
+        photoWithComments.comments.push(commentWithUserName);
+
+        // console.log(commentWithUserName);
+
+        getAllComments(ids, index + 1, photoWithComments, res);
+      })
 		});
 	}
 }
