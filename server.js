@@ -14,9 +14,30 @@ var controllers = require("./controllers");
 
 //set up database
 
+var MongoClient = require('mongodb').MongoClient;
+
+
 mongoose.Promise = Promise; //Set Mongo to use promises for asynch queries
 //connect to database
-mongoose.connect("mongodb://localhost/therify").then(response => console.log("Connected to database."));
+var uri = "mongodb+srv://therify:Therify18!@therify-ckkos.mongodb.net/test";
+// mongoose.connection = MongoClient.connect(uri, function(error, client) {
+// 	// const collection = client.db("therify").collection("devices");
+// 	console.log("Connected to remote database.");
+// });
+mongoose.connect(uri, {
+	authSource: "admin",
+	auth: {
+		user: "therify",
+		password: "Therify18!"
+	}
+}).then(response => {
+	console.log("Connected to database.")
+	// console.log(response);
+}).catch(error => {
+	console.log(error);
+});
+// console.log(mongoose.connection);
+
 //====================================================================
 
 //set up express with routes and bodyparser
