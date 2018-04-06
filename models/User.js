@@ -1,6 +1,8 @@
+// Require mongoose to create the models
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Define the user schema with several things
 const userSchema = new Schema({
 	email: { 
 		type: String,
@@ -8,14 +10,11 @@ const userSchema = new Schema({
 		required: true,
 		match: [/.+@.+\..+/, "Please enter a valid e-mail address"]
 	},
-	//should users be able to see a list of their photos? Probably.
-	//can mongoose handle many to one relationships where we want to be
-	//able to access the data from either side?
 	photos: { type: [Schema.Types.ObjectId], ref: "Photo" }
-	
-	//comments?
 });
 
+// Define a name for the model
 const User = mongoose.model("User", userSchema);
 
+// Export the model
 module.exports = User;
