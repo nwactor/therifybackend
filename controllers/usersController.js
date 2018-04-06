@@ -1,13 +1,10 @@
+// Requires the models to be used in the controllers
 const db = require("../models");
 
+// Exports the following functions
 module.exports = {
-	// get: function(req, res) {
-	// 	db.User.findOne({email: req.body.email})
-	// 		.then(foundUser => res.json(foundUser))
-	// 		.catch(err => res.status(422).json(err));
-	// },
+  // Function to handle the login
 	login: function(req, res) {
-		console.log(req.body);
 		db.User
 			.findOne({'email': req.body.email})
 			.then(result => {
@@ -23,7 +20,9 @@ module.exports = {
 				}
 			})
 			.catch(err => res.status(422).json(err));
-	},
+  },
+  
+  // Function to get the photos associated with a user
 	getPhotos: function(req, res) {
 		//the request will have the user's email, so find the user with that email
 		db.User.findOne({email: req.body.email})
