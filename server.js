@@ -1,3 +1,5 @@
+const appConfig = require("./config/config.json");
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -15,8 +17,13 @@ var controllers = require("./controllers");
 //set up database
 
 mongoose.Promise = Promise; //Set Mongo to use promises for asynch queries
+
+const dbuser = appConfig.dbuser;
+const dbpassword = appConfig.dbpassword;
+const dbname = appConfig.dbname;
 //connect to database
-mongoose.connect("mongodb://therify:Therify18@ds233739.mlab.com:33739/heroku_nmlsd1r4").then(response => console.log("Connected to database."));
+mongoose.connect(`mongodb://${dbuser}:${dbpassword}@ds151069-a0.mlab.com:51069,ds151069-a1.mlab.com:51069/${dbname}?replicaSet=rs-ds151069`)
+	.then(response => console.log("Connected to database."));
 //====================================================================
 
 //set up express with routes and bodyparser
