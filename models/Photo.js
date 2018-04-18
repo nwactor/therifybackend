@@ -1,8 +1,10 @@
+// Require mongoose to create the models
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Define the photo schema with several things
 const photoSchema = new Schema({
-	image: { data: Buffer, type: String, required: true }, //not sure if this is exactly what's needed
+	image: { data: Buffer, type: String, required: true },
 	fileType: { type: String, required: true },
 	location: { type: String, required: true },
 	date: { type: Date, default: Date.now },
@@ -14,6 +16,8 @@ const photoSchema = new Schema({
 	verified: { type: Boolean, default: false }
 });
 
+// Define a name for the model
 const Photo = mongoose.model("Photo", photoSchema);
 
+// Export the model
 module.exports = Photo;

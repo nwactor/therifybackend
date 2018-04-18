@@ -1,12 +1,11 @@
+// Require the necessary packages and the routes
 const express = require('express');
 const router = express.Router();
 const userRoutes = require('./api/users');
 const photoRoutes = require('./api/photos');
-//const commentRoutes = require('./api/comments');
 
 router.use("/user", userRoutes);
 router.use("/photos", photoRoutes);
-//router.use("/comment", commentRoutes);
 
 // If no API routes are hit, send a nice message
 router.use(function(req, res) {
@@ -15,3 +14,4 @@ router.use(function(req, res) {
 });
 
 module.exports = router;
+// Export the routes and the router
