@@ -93,7 +93,6 @@ module.exports = {
         var requestLocation = parseLocation(req.body.location);
         
         // Calls a function to determine proximity for each photo in the db
-        console.log("Inside photosController 96: at "+ new Date());
         photos.forEach(photo => {
           // If the photo in the db is within the range of the requested location, push it into an array
           if(global_dist(requestLocation, parseLocation(photo.location), req.body.range)) {
@@ -102,7 +101,6 @@ module.exports = {
         });
         
         res.json(results); // Return the photos found in the range
-        console.log("Insde photosController 196: @ "+ new Date());
       }).catch(err => {
         res.json(err);
       });

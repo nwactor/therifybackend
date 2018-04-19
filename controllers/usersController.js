@@ -25,11 +25,13 @@ module.exports = {
   // Function to get the photos associated with a user
   getPhotos: function(req, res) {
     //the request will have the user's email, so find the user with that email
+    console.log("usersController line 28 "+ new Date());
     db.User.findOne({email: req.body.email})
       .then(user => {
         db.Photos.find({user: user.id})
           .then(userPhotos => {
             res.json(userPhotos);
+            console.log("usersController line 34 sending Photos"+ new Date());
           }).catch(err => console.log(err));
       })
   }
