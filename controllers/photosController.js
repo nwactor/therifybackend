@@ -18,6 +18,7 @@ module.exports = {
           verified: req.body.verified
         };
         // Adds the photo to the db 
+        console.log("Adding a photo in the DB!");
         db.Photo.create(photo)
           .then(createdPhoto => {
             // Once completed, log the following message
