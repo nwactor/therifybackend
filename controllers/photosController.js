@@ -8,6 +8,7 @@ module.exports = {
     db.User.findOne({email: req.body.email})
       .then(user => {
         // Creates the photo object to be sent to the db
+        console.log("Creating a photo object before pushing it to DB");
         var photo = {
           image: req.body.image,
           fileType: req.body.fileType,
@@ -18,7 +19,6 @@ module.exports = {
           verified: req.body.verified
         };
         // Adds the photo to the db 
-        console.log("Adding a photo in the DB!");
         db.Photo.create(photo)
           .then(createdPhoto => {
             // Once completed, log the following message
