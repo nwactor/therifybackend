@@ -100,7 +100,7 @@ module.exports = {
             results.push(photo);
           }
         });
-        
+        console.log("About to return those photos, in photosController.js");
         res.json(results); // Return the photos found in the range
       }).catch(err => {
         res.json(err);
