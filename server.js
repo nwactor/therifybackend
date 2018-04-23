@@ -23,7 +23,7 @@ const dbpassword = appConfig.dbpassword;
 const dbname = appConfig.dbname;
 //connect to database
 mongoose.connect(`mongodb://${dbuser}:${dbpassword}@ds151069-a0.mlab.com:51069,ds151069-a1.mlab.com:51069/${dbname}?replicaSet=rs-ds151069`)
-    .then(response => console.log("Connected to database."));
+	.then(response => console.log("Connected to database."));
 //====================================================================
 
 //set up express with routes and bodyparser
@@ -58,34 +58,34 @@ websocket.on('connection', (socket) => {
 //socket.io listeners
 
 function onFeedRequested(locationRequest, socket) {
-    process.stdout.write("Given location: ");
-    console.log(locationRequest.location);
+	process.stdout.write("Given location: ");
+	console.log(locationRequest.location);
 
-    //get all the photos and then filter them by location
-    db.Photo.find().then(photos => {
-        var queryLocation = parseLocation(locationRequest.location);
-        photos.forEach(photo => {
-            if(global_dist(queryLocation, parseLocation(photo.location), locationRequest.range)) {
-                console.log("photo in range, sending photo");
-                socket.emit('feedPhoto', photo);
-            }
-        });
-    });
+	//get all the photos and then filter them by location
+	db.Photo.find().then(photos => {
+		var queryLocation = parseLocation(locationRequest.location);
+		photos.forEach(photo => {
+			if(global_dist(queryLocation, parseLocation(photo.location), locationRequest.range)) {
+				console.log("photo in range, sending photo");
+				socket.emit('feedPhoto', photo);
+			}
+		});
+	});
 }
 
 function onProfileRequested(profileRequest, socket) {
-    db.User.findOne({email: profileRequest.email})
-        .then(user => {
-            user.photos.forEach(photoID => {
-                db.Photo.findOne({_id: photoID})
-                    .then(photo => {
-                        if(photo != null) {
-                            console.log("sending profile photo for " + profileRequest.email);
-                            socket.emit('authoredPhoto', photo);
-                        }
-                    })
-            })
-        });
+	db.User.findOne({email: profileRequest.email})
+		.then(user => {
+			user.photos.forEach(photoID => {
+				db.Photo.findOne({_id: photoID})
+					.then(photo => {
+						if(photo != null) {
+							console.log("sending profile photo for " + profileRequest.email);
+							socket.emit('authoredPhoto', photo);
+						}
+					})
+			})
+		});
 }
 
 //====================================================================
@@ -93,12 +93,12 @@ function onProfileRequested(profileRequest, socket) {
 //helper functions
 
 function parseLocation(locationString) {
-    var location = locationString.split(" ");
-    console.log("Parsed location: " + location);
-    var lat = parseFloat(location[0]);
-    var long = parseFloat(location[1]);
-    //check to make sure lat and long are valid
-    return [lat, long];
+	var location = locationString.split(" ");
+	console.log("Parsed location: " + location);
+	var lat = parseFloat(location[0]);
+	var long = parseFloat(location[1]);
+	//check to make sure lat and long are valid
+	return [lat, long];
 }
 
 //function to calculate if a given location is within a given range
@@ -115,23 +115,23 @@ function global_dist(pos1, pos2, range){
         var pi = Math.PI;
         return degrees * (pi / 180);
     }
-    const earth_rad = 6371000;
+	const earth_rad = 6371000;
     let ch_lat = (f_lat - st_lat);
     ch_lat = degrees_to_radians(ch_lat);
     let ch_long = (f_long - st_long);
     ch_long = degrees_to_radians(ch_long);
-    
-    const a = Math.pow(Math.sin(ch_lat/2),2) + 
-    (Math.cos(st_lat)*Math.cos(f_lat)*Math.pow(Math.sin(ch_long/2),2));
+	
+	const a = Math.pow(Math.sin(ch_lat/2),2) + 
+	(Math.cos(st_lat)*Math.cos(f_lat)*Math.pow(Math.sin(ch_long/2),2));
 
-    const c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+	const c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
     const ans = earth_rad * c;
     // console.log("location a is ",ans,"km away from location b");
-    if (ans <= range){
+	if (ans <= range){
         // console.log(true);
-        return true;
-    } else {
+		return true;
+	} else {
         // console.log(false);
-        return false;
-    }
+		return false;
+	}
 }
