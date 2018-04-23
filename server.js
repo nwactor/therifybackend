@@ -68,6 +68,8 @@ function onFeedRequested(locationRequest, socket) {
 			if(global_dist(queryLocation, parseLocation(photo.location), locationRequest.range)) {
 				console.log("photo in range, sending photo");
 				socket.emit('feedPhoto', photo);
+			} else {
+				console.log("client already had photo");
 			}
 		});
 	});
