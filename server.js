@@ -60,7 +60,7 @@ websocket.on('connection', (socket) => {
 function onFeedRequested(locationRequest, socket) {
 	process.stdout.write("Client location: ");
 	console.log(locationRequest.location);
-
+	console.log(locationRequest.alreadyLoaded);
 	//get all the photos and then filter them by location
 	db.Photo.find().then(photos => {
 		var queryLocation = parseLocation(locationRequest.location);
