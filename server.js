@@ -70,7 +70,7 @@ function onFeedRequested(locationRequest, socket) {
 					console.log(`client already had photo ${photo._id}`);
 				} else {
 					console.log(`photo ${photo._id} in range, sending photo`);
-					console.log(typeof photo_id);
+					console.log(typeof photo._id);
 					socket.emit('feedPhoto', photo);
 				}
 			}
