@@ -66,11 +66,10 @@ function onFeedRequested(locationRequest, socket) {
 		var queryLocation = parseLocation(locationRequest.location);
 		photos.forEach(photo => {
 			if(global_dist(queryLocation, parseLocation(photo.location), locationRequest.range)) {
-				if(locationRequest.alreadyLoaded.includes(photo._id)) {
+				if(locationRequest.alreadyLoaded.includes(photo._id.toString())) {
 					console.log(`client already had photo ${photo._id}`);
 				} else {
 					console.log(`photo ${photo._id} in range, sending photo`);
-					console.log(typeof photo._id);
 					socket.emit('feedPhoto', photo);
 				}
 			}
