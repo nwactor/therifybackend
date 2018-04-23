@@ -58,7 +58,7 @@ websocket.on('connection', (socket) => {
 //socket.io listeners
 
 function onFeedRequested(locationRequest, socket) {
-	process.stdout.write("Given location: ");
+	process.stdout.write("Client location: ");
 	console.log(locationRequest.location);
 
 	//get all the photos and then filter them by location
@@ -66,10 +66,10 @@ function onFeedRequested(locationRequest, socket) {
 		var queryLocation = parseLocation(locationRequest.location);
 		photos.forEach(photo => {
 			if(global_dist(queryLocation, parseLocation(photo.location), locationRequest.range)) {
-				console.log("photo in range, sending photo");
+				console.log(`photo ${photo._id} in range, sending photo`);
 				socket.emit('feedPhoto', photo);
 			} else {
-				console.log("client already had photo");
+				console.log(`client already had photo ${photo._id}`);
 			}
 		});
 	});
@@ -96,7 +96,7 @@ function onProfileRequested(profileRequest, socket) {
 
 function parseLocation(locationString) {
 	var location = locationString.split(" ");
-	console.log("Parsed location: " + location);
+	// console.log("Parsed location: " + location);
 	var lat = parseFloat(location[0]);
 	var long = parseFloat(location[1]);
 	//check to make sure lat and long are valid
