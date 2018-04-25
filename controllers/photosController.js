@@ -39,14 +39,14 @@ module.exports = {
       photo.comments.forEach(comment => {
         db.Comment.findOne({id:comment.id}).then(comment=> {
           comment.remove();
-        }).then( ()=>{
-          photo.remove();
-          console.log("Now removing photo completely");
         }).catch(err => {
           console.log(err);
         });
+      });
       //send the deleted photo back in case the client wants to do something with it
       res.json(photo);
+      photo.remove();
+      console.log("That shit is removed");
     }).catch(err => {
       console.log(err);
     });
