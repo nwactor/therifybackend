@@ -31,7 +31,7 @@ mongoose.connect(`mongodb://${dbuser}:${dbpassword}@ds151069-a0.mlab.com:51069,d
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(bodyParser.json({limit: '20mb'})); //for some reason, this is needed to see the body from fetch requests
+app.use(bodyParser.json({limit: '20mb'})); //for some reason, bodyParse.json is needed to see the body from fetch requests
 
 var routes = require("./routes/routes");
 app.use("/", routes);
@@ -70,7 +70,24 @@ function onFeedRequested(locationRequest, socket) {
 					console.log(`client already had photo ${photo._id}`);
 				} else {
 					console.log(`photo ${photo._id} in range, sending photo`);
-					socket.emit('feedPhoto', photo);
+					
+					var thumbnailData = {
+						_id: photo._id,
+						thumbnail: photo.thumbnail,
+						fileType: { type: String, required: true },
+						location: { type: String, required: true },
+						date: { type: Date, default: Date.now },
+						user: { type: Schema.Types.ObjectId, ref: "User" },
+						verified: { type: Boolean, default: false }
+					};
+
+					var largeData = {
+						_id: photo._id,
+						image: photo.image
+					};
+
+					socket.emit('thumbnailData', thumbnailData);
+					socket.emit('largeData', largeData);
 				}
 			}
 		});
