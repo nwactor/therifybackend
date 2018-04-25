@@ -11,6 +11,7 @@ module.exports = {
         console.log("Creating a photo object before pushing it to DB");
         var photo = {
           image: req.body.image,
+          thumbnail: req.body.thumbnail,
           fileType: req.body.fileType,
           location: req.body.location,
           user: user.id,

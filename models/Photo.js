@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 // Define the photo schema with several things
 const photoSchema = new Schema({
 	image: { data: Buffer, type: String, required: true },
+	thumbnail: { data: Buffer, type: String, required: true },
 	fileType: { type: String, required: true },
 	location: { type: String, required: true },
 	date: { type: Date, default: Date.now },
