@@ -74,7 +74,7 @@ function onFeedRequested(locationRequest, socket) {
 					var thumbnailData = {
 						_id: photo._id,
 						thumbnail: photo.thumbnail,
-						fileType: photo.fileType
+						fileType: photo.fileType,
 						location: photo.location,
 						date: photo.date,
 						user: photo.user,
