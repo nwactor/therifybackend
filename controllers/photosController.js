@@ -38,6 +38,7 @@ module.exports = {
     db.Photo.findOne({id:req.body.id}).then(photo =>{
       photo.remove();
     }).then(photo => { // just in case it doesn't cascade delete...
+      console.log("The photo to be deleted is: "+JSON.stringify(photo));
       photo.comments.forEach(comment => {
         db.Comment.findOne({id:comment.id}).then(comment=> {
           comment.remove();
