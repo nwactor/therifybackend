@@ -31,7 +31,7 @@ mongoose.connect(`mongodb://${dbuser}:${dbpassword}@ds151069-a0.mlab.com:51069,d
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(bodyParser.json({limit: '10mb'})); //for some reason, this is needed to see the body from fetch requests
+app.use(bodyParser.json({limit: '20mb'})); //for some reason, this is needed to see the body from fetch requests
 
 var routes = require("./routes/routes");
 app.use("/", routes);
