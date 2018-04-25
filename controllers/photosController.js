@@ -69,7 +69,7 @@ module.exports = {
 
         // get all of the photo's comments
         db.User.findOne({_id: photo.user}).then(user => {
-          photoWithComments.user = user.email;
+          photoWithComments.user = user.username;
           
           // Recursive function call to create an array of all the comments for that pic
           getAllComments(photo.comments, 0, photoWithComments, res);
@@ -171,12 +171,12 @@ function getAllComments(ids, index, photoWithComments, res){
         "_id": comment._id,
         "body": comment.body,
         "user": comment.user,
-        "userName": ''
+        "username": ''
       }
 
       // Find the user's email address based on the ID
       db.User.findOne({_id: comment.user}).then(user => {
-        commentWithUserName["userName"] = user.email;
+        commentWithUserName["userName"] = user.username;
 
         // Push the comment object to the array to send to the front-end
         photoWithComments.comments.push(commentWithUserName);
