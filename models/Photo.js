@@ -7,7 +7,7 @@ const photoSchema = new Schema({
 	image: { data: Buffer, type: String, required: true },
 	fileType: { type: String, required: true },
 	location: { type: String, required: true },
-	date: { type: Date, default: Date.now },
+	date: { type: String },
 	user: { type: Schema.Types.ObjectId, ref: "User" },
 	title: String,
 	description: String,
