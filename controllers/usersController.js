@@ -12,7 +12,16 @@ module.exports = {
           console.log("New user registering.");
           db.User
             .create(req.body)
-            .then(newUser => res.json(newUser))
+            .then(newUser => {
+              var objToSend = {
+                photos: newUser.photos,
+                id: newUser._id,
+                email: newUser.email,
+                newUser: true
+              }
+              res.json(objToSend);
+            })
+              
             .catch(err => res.status(422).json(err));
         } else {
           console.log("Existing user returning");
@@ -32,5 +41,20 @@ module.exports = {
             res.json(userPhotos);
           }).catch(err => console.log(err));
       })
+  },
+
+  // Creates a username for the user
+  setUsername: function(req, res) {
+    db.User.update(
+      { email: req.body.email },
+      { $set: 
+        {
+          "username": req.body.username
+        }
+      }
+    )
+    .then(user => {
+      res.json(user);
+    })
   }
 };

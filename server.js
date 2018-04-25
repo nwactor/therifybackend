@@ -23,7 +23,7 @@ const dbpassword = appConfig.dbpassword;
 const dbname = appConfig.dbname;
 //connect to database
 mongoose.connect(`mongodb://${dbuser}:${dbpassword}@ds151069-a0.mlab.com:51069,ds151069-a1.mlab.com:51069/${dbname}?replicaSet=rs-ds151069`)
-	.then(response => console.log("Connected to database."));
+  .then(response => console.log("Connected to database."));
 //====================================================================
 
 //set up express with routes and bodyparser

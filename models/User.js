@@ -10,7 +10,8 @@ const userSchema = new Schema({
 		required: true,
 		match: [/.+@.+\..+/, "Please enter a valid e-mail address"]
 	},
-	photos: { type: [Schema.Types.ObjectId], ref: "Photo" }
+  photos: { type: [Schema.Types.ObjectId], ref: "Photo" },
+  username: { type: String, unique: true }
 });
 
 // Define a name for the model
