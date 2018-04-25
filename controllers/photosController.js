@@ -17,7 +17,8 @@ module.exports = {
           user: user.id,
           title: req.body.title,
           description: req.body.description,
-          verified: req.body.verified
+          verified: req.body.verified,
+          date: req.body.date
         };
         // Adds the photo to the db 
         db.Photo.create(photo)
