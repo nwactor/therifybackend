@@ -38,6 +38,7 @@ module.exports = {
     db.Photo.findOne({id:req.body.id}).then(photo =>{
       photo.comments.forEach(comment => {
         db.Comment.findOne({id:comment.id}).then(comment=> {
+          console.log("Found a comment");
           comment.remove();
         }).catch(err => {
           console.log(err);
