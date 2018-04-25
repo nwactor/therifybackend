@@ -70,24 +70,27 @@ function onFeedRequested(locationRequest, socket) {
 					console.log(`client already had photo ${photo._id}`);
 				} else {
 					console.log(`photo ${photo._id} in range, sending photo`);
-					
-					var thumbnailData = {
-						_id: photo._id,
-						thumbnail: photo.thumbnail,
-						fileType: photo.fileType,
-						location: photo.location,
-						date: photo.date,
-						user: photo.user,
-						verified: photo.verified
-					};
+					socket.emit('feedPhoto', photo);
 
-					var largeData = {
-						_id: photo._id,
-						image: photo.image
-					};
+					//old thumbnail stuff
 
-					socket.emit('thumbnailData', thumbnailData);
-					socket.emit('largeData', largeData);
+					// var thumbnailData = {
+					// 	_id: photo._id,
+					// 	thumbnail: photo.thumbnail,
+					// 	fileType: photo.fileType,
+					// 	location: photo.location,
+					// 	date: photo.date,
+					// 	user: photo.user,
+					// 	verified: photo.verified
+					// };
+
+					// var largeData = {
+					// 	_id: photo._id,
+					// 	image: photo.image
+					// };
+
+					// socket.emit('thumbnailData', thumbnailData);
+					// socket.emit('largeData', largeData);
 				}
 			}
 		});
