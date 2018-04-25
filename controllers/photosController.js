@@ -43,7 +43,7 @@ module.exports = {
         }).catch(err => {
           console.log(err);
         });
-      }).then({
+      }).then( ()=>{
         photo.remove();
         console.log("Now removing photo completely");
       });
