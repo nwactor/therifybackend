@@ -39,6 +39,7 @@ module.exports = {
       photo.comments.forEach(comment => {
         db.Comment.findOne({id:comment.id}).then(comet=> {
           console.log("Found a comment");
+          console.log("The comet is hit");
           comet.remove();
         }).catch(err => {
           console.log(err);
