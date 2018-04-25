@@ -37,9 +37,9 @@ module.exports = {
   remove: function(req, res) {
     db.Photo.findOne({id:req.body.id}).then(photo =>{
       photo.comments.forEach(comment => {
-        db.Comment.findOne({id:comment.id}).then(comment=> {
+        db.Comment.findOne({id:comment.id}).then(comet=> {
           console.log("Found a comment");
-          comment.remove();
+          comet.remove();
         }).catch(err => {
           console.log(err);
         });
