@@ -74,11 +74,11 @@ function onFeedRequested(locationRequest, socket) {
 					var thumbnailData = {
 						_id: photo._id,
 						thumbnail: photo.thumbnail,
-						fileType: { type: String, required: true },
-						location: { type: String, required: true },
-						date: { type: Date, default: Date.now },
-						user: { type: Schema.Types.ObjectId, ref: "User" },
-						verified: { type: Boolean, default: false }
+						fileType: photo.fileType
+						location: photo.location,
+						date: photo.date,
+						user: photo.user,
+						verified: photo.verified
 					};
 
 					var largeData = {
