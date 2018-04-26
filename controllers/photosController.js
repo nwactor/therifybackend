@@ -48,9 +48,9 @@ module.exports = {
       });
       //delete reference to photo in user
       db.User.findById(photo.user).then(user => {
-        var updatedPhotoList = [];
-        //leave it as an empty array if the length is 1, because splice doesn't seem to work in that case
-        if(user.photos.length > 1) { updatedPhotoList = user.photos.splice(user.photos.indexOf(photo._id), 1); }
+        var updatedPhotoList = user.photos.filter(photoReference => {
+          photoReference != photo._id;
+        }); 
         db.User.findByIdAndUpdate(
           user._id,
           { $set: { photos: updatedPhotoList }}
