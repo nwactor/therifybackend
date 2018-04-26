@@ -36,8 +36,7 @@ module.exports = {
   
    // Removes the photo (not being used at the moment)
   remove: function(req, res) {
-    db.Photo.findOne({ id: req.body.id })
-    .then(photo =>{
+    db.Photo.findOne({ id: req.body.id }).then(photo =>{
       
       //delete all of photo's comments
       photo.comments.forEach(comment => {
