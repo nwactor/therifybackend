@@ -79,6 +79,7 @@ function onFeedRequested(locationRequest, socket) {
 			}
 		});
 		if(!anyPhotosFound) {
+			console.log('No photos found');
 			socket.emit('noPhotosFound');
 		}
 	});
