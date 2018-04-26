@@ -36,7 +36,6 @@ module.exports = {
   
    // Removes the photo (not being used at the moment)
   remove: function(req, res) {
-    console.log("given photo to delete: " + req.params.id);
     db.Photo.findById(req.params.id).then(photo =>{
       
       //delete all of photo's comments
@@ -50,6 +49,7 @@ module.exports = {
       
       //delete reference to photo in user
       db.User.findById(photo.user).then(user => {
+        console.log("photo reference to remove from user: " + photo._id);
         console.log("Photo references before deletion " + user.photos);
         var updatedPhotoList = user.photos.filter(photoReference => photoReference != photo._id);
         console.log("Photo references after deletion " + updatedPhotoList); 
