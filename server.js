@@ -86,9 +86,13 @@ function onFeedRequested(locationRequest, socket) {
 }
 
 function onProfileRequested(profileRequest, socket) {
+	
+	var anyPhotosFound = false;
+
 	db.User.findOne({email: profileRequest.email})
 		.then(user => {
 			user.photos.forEach(photoID => {
+				anyPhotosFound = true;
 				db.Photo.findOne({_id: photoID})
 					.then(photo => {
 						if(photo != null) {
@@ -96,7 +100,11 @@ function onProfileRequested(profileRequest, socket) {
 							socket.emit('authoredPhoto', photo);
 						}
 					})
-			})
+			});
+			if(!anyPhotosFound) {
+				console.log('No photos found');
+				socket.emit('noPhotosFound');
+			}
 		});
 }
 
