@@ -91,7 +91,6 @@ function onProfileRequested(profileRequest, socket) {
 
 	db.User.findOne({email: profileRequest.email})
 		.then(user => {
-			console.log("what's going on???");
 			user.photos.forEach(photoID => {
 				anyPhotosFound = true;
 				db.Photo.findOne({_id: photoID})
