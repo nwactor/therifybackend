@@ -38,18 +38,16 @@ module.exports = {
   remove: function(req, res) {
     db.Photo.findOne({id:req.body.id}).then(photo =>{
       photo.comments.forEach(comment => {
-        console.log("Where are all those comments?");
-        db.Comment.findOne({id:comment._id}).then(comet=> {
-          console.log("Found a comment The comet is hit");
-          comet.remove();
+        db.Comment.findOne({id:comment._id}).then(acomment=> {
+          acomment.remove();
         }).catch(err => {
           console.log(err);
         });
       });
       //send the deleted photo back in case the client wants to do something with it
-      res.json(photo);
       photo.remove();
-      console.log("That shit is removed");
+      res.json(photo);
+      console.log("Removed photo with _id:"+req.body.id);
     }).catch(err => {
       console.log(err);
     });
