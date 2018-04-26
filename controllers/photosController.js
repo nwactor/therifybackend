@@ -53,7 +53,7 @@ module.exports = {
         console.log("Photo references before deletion " + user.photos);
         var updatedPhotoList = user.photos.filter(photoReference => {
           console.log(photoReference);
-          return photoReference != photo._id;
+          return photoReference != photo._id.toString();
         });
         console.log("Photo references after deletion " + updatedPhotoList); 
         db.User.findByIdAndUpdate(
