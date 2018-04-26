@@ -86,7 +86,7 @@ function onFeedRequested(locationRequest, socket) {
 }
 
 function onProfileRequested(profileRequest, socket) {
-	
+	console.log("sending profile photos for " + profileRequest.email);
 	var anyPhotosFound = false;
 
 	db.User.findOne({email: profileRequest.email})
@@ -102,7 +102,7 @@ function onProfileRequested(profileRequest, socket) {
 					})
 			});
 			if(!anyPhotosFound) {
-				console.log('No photos found');
+				console.log('No profile photos found');
 				socket.emit('noPhotosFound');
 			}
 		});
