@@ -61,39 +61,26 @@ function onFeedRequested(locationRequest, socket) {
 	process.stdout.write("Client location: ");
 	console.log(locationRequest.location);
 
+	var anyPhotosFound = false;
+
 	//get all the photos and then filter them by location
 	db.Photo.find().then(photos => {
 		var queryLocation = parseLocation(locationRequest.location);
 		photos.forEach(photo => {
 			if(global_dist(queryLocation, parseLocation(photo.location), locationRequest.range)) {
+				anyPhotosFound = true;
+				
 				if(locationRequest.alreadyLoaded.includes(photo._id.toString())) {
 					console.log(`client already had photo ${photo._id}`);
 				} else {
 					console.log(`photo ${photo._id} in range, sending photo`);
 					socket.emit('feedPhoto', photo);
-
-					//old thumbnail stuff
-
-					// var thumbnailData = {
-					// 	_id: photo._id,
-					// 	thumbnail: photo.thumbnail,
-					// 	fileType: photo.fileType,
-					// 	location: photo.location,
-					// 	date: photo.date,
-					// 	user: photo.user,
-					// 	verified: photo.verified
-					// };
-
-					// var largeData = {
-					// 	_id: photo._id,
-					// 	image: photo.image
-					// };
-
-					// socket.emit('thumbnailData', thumbnailData);
-					// socket.emit('largeData', largeData);
 				}
 			}
 		});
+		if(!anyPhotosFound) {
+			socket.emit('noPhotosFound');
+		}
 	});
 }
 
