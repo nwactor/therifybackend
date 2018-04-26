@@ -38,6 +38,7 @@ module.exports = {
   remove: function(req, res) {
     db.Photo.findOne({ id: req.body.id })
     .then(photo =>{
+      
       //delete all of photo's comments
       photo.comments.forEach(comment => {
         db.Comment.findOne({ id: comment._id }).then(acomment=> {
@@ -46,6 +47,7 @@ module.exports = {
           console.log("error removing comment: " + err);
         });
       });
+      
       //delete reference to photo in user
       db.User.findById(photo.user).then(user => {
         var updatedPhotoList = user.photos.filter(photoReference => {
@@ -61,10 +63,12 @@ module.exports = {
         console.log("error finding deleted photo's user: " + err);
       });
 
+      //remove the photo itself
       photo.remove();
       console.log("Removed photo with id:"+ photo._id);
       //send the deleted photo back in case the client wants to do something with it
       res.json(photo);
+    
     }).catch(err => {
       console.log(err);
     });
