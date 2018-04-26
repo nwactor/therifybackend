@@ -86,11 +86,11 @@ function onFeedRequested(locationRequest, socket) {
 }
 
 function onProfileRequested(profileRequest, socket) {
-	console.log("searching profile photos for " + profileRequest.email);
 	var anyPhotosFound = false;
 
 	db.User.findOne({email: profileRequest.email})
 		.then(user => {
+			console.log("searching profile photos for " + profileRequest.email);
 			user.photos.forEach(photoID => {
 				anyPhotosFound = true;
 				db.Photo.findOne({_id: photoID})
