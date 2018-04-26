@@ -51,7 +51,10 @@ module.exports = {
       db.User.findById(photo.user).then(user => {
         console.log("photo reference to remove from user: " + photo._id);
         console.log("Photo references before deletion " + user.photos);
-        var updatedPhotoList = user.photos.filter(photoReference => photoReference != photo._id);
+        var updatedPhotoList = user.photos.filter(photoReference => {
+          console.log(photoReference);
+          return photoReference != photo._id;
+        });
         console.log("Photo references after deletion " + updatedPhotoList); 
         db.User.findByIdAndUpdate(
           user._id,
