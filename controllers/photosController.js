@@ -36,6 +36,7 @@ module.exports = {
   
    // Removes the photo (not being used at the moment)
   remove: function(req, res) {
+    console.log("given photo to delete: " + req.body.id);
     db.Photo.findOne({ id: req.body.id }).then(photo =>{
       
       //delete all of photo's comments
@@ -63,11 +64,12 @@ module.exports = {
       });
 
       //remove the photo itself
-      photo.remove();
-      console.log("Removed photo with id:"+ photo._id);
-      //send the deleted photo back in case the client wants to do something with it
-      res.json(photo);
-    
+      photo.remove(function() {
+        console.log("Removed photo with id:"+ photo._id);
+        //send the deleted photo back in case the client wants to do something with it
+        res.json(photo);
+      });
+      
     }).catch(err => {
       console.log(err);
     });
