@@ -43,29 +43,28 @@ module.exports = {
         db.Comment.findOne({ id: comment._id }).then(acomment=> {
           acomment.remove();
         }).catch(err => {
-          console.log("error removing comment; " + err);
+          console.log("error removing comment: " + err);
         });
       });
       //delete reference to photo in user
       db.User.findById(photo.user).then(user => {
         var updatedPhotoList = [];
         //leave it as an empty array if the length is 1, because splice doesn't seem to work in that case
-        if(user.photos.length > 1) { updatedPhotoList = user.photos.splice(photo._id, 1); }
+        if(user.photos.length > 1) { updatedPhotoList = user.photos.splice(user.photos.indexOf(photo._id), 1); }
         db.User.findByIdAndUpdate(
           user._id,
           { $set: { photos: updatedPhotoList }}
         ).catch(err => {
-          console.log("error removing user's reference to photo; " + err);
+          console.log("error removing user's reference to photo: " + err);
         });
       }).catch(err => {
-        console.log("error finding deleted photo's user; " + err);
+        console.log("error finding deleted photo's user: " + err);
       });
 
-      
-      //send the deleted photo back in case the client wants to do something with it
       photo.remove();
+      console.log("Removed photo with id:"+ photo._id);
+      //send the deleted photo back in case the client wants to do something with it
       res.json(photo);
-      console.log("Removed photo with _id:"+req.body.id);
     }).catch(err => {
       console.log(err);
     });
