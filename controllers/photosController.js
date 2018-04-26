@@ -38,6 +38,7 @@ module.exports = {
   remove: function(req, res) {
     db.Photo.findOne({ id: req.body.id })
     .then(photo =>{
+      //delete all of photo's comments
       photo.comments.forEach(comment => {
         db.Comment.findOne({ id: comment._id }).then(acomment=> {
           acomment.remove();
@@ -45,10 +46,15 @@ module.exports = {
           console.log(err);
         });
       });
-      db.User.findByIdAndUpdate(
-        photo.user,
-        { $set: { photos: user.photos.splice(photo._id, 1) }}
-      );
+      //delete reference to photo in user
+      db.User.findById(photo.user).then(user => {
+        findByIdAndUpdate(
+          user._id,
+          { $set: { photos: user.photos.splice(photo._id, 1) }}
+        );
+      });
+
+      
       //send the deleted photo back in case the client wants to do something with it
       photo.remove();
       res.json(photo);
