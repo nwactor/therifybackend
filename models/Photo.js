@@ -17,6 +17,10 @@ const photoSchema = new Schema({
 	verified: { type: Boolean, default: false }
 });
 
+// photoSchema.pre('remove', function() {
+
+// });
+
 // Define a name for the model
 const Photo = mongoose.model("Photo", photoSchema);
 

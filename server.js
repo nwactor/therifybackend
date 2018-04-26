@@ -99,7 +99,7 @@ function onProfileRequested(profileRequest, socket) {
 							console.log("sending profile photo for " + profileRequest.email);
 							socket.emit('authoredPhoto', photo);
 						}
-					})
+					});
 			});
 			if(!anyPhotosFound) {
 				console.log('No profile photos found');

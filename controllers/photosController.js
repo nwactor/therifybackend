@@ -36,14 +36,19 @@ module.exports = {
   
    // Removes the photo (not being used at the moment)
   remove: function(req, res) {
-    db.Photo.findOne({id:req.body.id}).then(photo =>{
+    db.Photo.findOne({ id: req.body.id })
+    .then(photo =>{
       photo.comments.forEach(comment => {
-        db.Comment.findOne({id:comment._id}).then(acomment=> {
+        db.Comment.findOne({ id: comment._id }).then(acomment=> {
           acomment.remove();
         }).catch(err => {
           console.log(err);
         });
       });
+      db.User.findByIdAndUpdate(
+        photo.user,
+        { $set: { photos: user.photos.splice(photo._id, 1) }}
+      );
       //send the deleted photo back in case the client wants to do something with it
       photo.remove();
       res.json(photo);
