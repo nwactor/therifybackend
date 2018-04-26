@@ -47,6 +47,7 @@ module.exports = {
       //send the deleted photo back in case the client wants to do something with it
       photo.remove();
       res.json(photo);
+      console.log("Removed photo with _id:"+req.body.id);
     }).catch(err => {
       console.log(err);
     });
