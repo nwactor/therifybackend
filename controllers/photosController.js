@@ -43,15 +43,20 @@ module.exports = {
         db.Comment.findOne({ id: comment._id }).then(acomment=> {
           acomment.remove();
         }).catch(err => {
-          console.log(err);
+          console.log("error removing comment; " + err);
         });
       });
       //delete reference to photo in user
       db.User.findById(photo.user).then(user => {
+        console.log("Deleting user's reference to photo");
         db.User.findByIdAndUpdate(
           user._id,
           { $set: { photos: user.photos.splice(photo._id, 1) }}
-        );
+        ).catch(err => {
+          console.log("error removing user's reference to photo; " + err);
+        });
+      }).catch(err => {
+        console.log("error finding deleted photo's user; " + err);
       });
 
       
