@@ -34,13 +34,13 @@ module.exports = {
       });
   },
   
-  // Removes the photo (not being used at the moment)
+   // Removes the photo (not being used at the moment)
   remove: function(req, res) {
     db.Photo.findOne({id:req.body.id}).then(photo =>{
       photo.comments.forEach(comment => {
-        db.Comment.findOne({id:comment.id}).then(comet=> {
-          console.log("Found a comment");
-          console.log("The comet is hit");
+        console.log("Where are all those comments?");
+        db.Comment.findOne({id:comment._id}).then(comet=> {
+          console.log("Found a comment The comet is hit");
           comet.remove();
         }).catch(err => {
           console.log(err);
@@ -54,7 +54,7 @@ module.exports = {
       console.log(err);
     });
   },
-  
+ 
   // Get the photo with the comments to display the detailed screen
   getWithComments: function(req, res) {
 
