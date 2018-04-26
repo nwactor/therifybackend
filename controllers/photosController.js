@@ -45,9 +45,8 @@ module.exports = {
         });
       });
       //send the deleted photo back in case the client wants to do something with it
-      res.json(photo);
       photo.remove();
-      console.log("Finally removed the photo");
+      res.json(photo);
     }).catch(err => {
       console.log(err);
     });
