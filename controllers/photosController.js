@@ -48,7 +48,6 @@ module.exports = {
       });
       //delete reference to photo in user
       db.User.findById(photo.user).then(user => {
-        console.log("Deleting user's reference to photo");
         db.User.findByIdAndUpdate(
           user._id,
           { $set: { photos: user.photos.splice(photo._id, 1) }}
