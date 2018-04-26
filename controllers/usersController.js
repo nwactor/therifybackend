@@ -9,7 +9,7 @@ module.exports = {
       .findOne({'email': req.body.email})
       .then(result => {
         if(result === null) { //the user was new
-          console.log("New user registering.");
+          console.log("New user registering: " + req.body.email);
           db.User
             .create(req.body)
             .then(newUser => {
@@ -24,7 +24,7 @@ module.exports = {
               
             .catch(err => res.status(422).json(err));
         } else {
-          console.log("Existing user returning");
+          console.log("Existing user returning: " + req.body.email);
           res.json(result);
         }
       })

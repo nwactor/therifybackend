@@ -36,33 +36,37 @@ module.exports = {
   
    // Removes the photo (not being used at the moment)
   remove: function(req, res) {
-    db.Photo.findOne({ id: req.body.id })
-    .then(photo =>{
+    db.Photo.findById(req.params.id).then(photo =>{
+      
       //delete all of photo's comments
       photo.comments.forEach(comment => {
         db.Comment.findOne({ id: comment._id }).then(acomment=> {
           acomment.remove();
         }).catch(err => {
-          console.log("error removing comment; " + err);
+          console.log("error removing comment: " + err);
         });
       });
+      
       //delete reference to photo in user
       db.User.findById(photo.user).then(user => {
+        var updatedPhotoList = user.photos.filter(photoReference => photoReference != photo._id.toString());
         db.User.findByIdAndUpdate(
           user._id,
-          { $set: { photos: user.photos.splice(photo._id, 1) }}
+          { $set: { photos: updatedPhotoList }}
         ).catch(err => {
-          console.log("error removing user's reference to photo; " + err);
+          console.log("error removing user's reference to photo: " + err);
         });
       }).catch(err => {
-        console.log("error finding deleted photo's user; " + err);
+        console.log("error finding deleted photo's user: " + err);
       });
 
+      //remove the photo itself
+      photo.remove(function() {
+        console.log("Removed photo with id:"+ photo._id);
+        //send the deleted photo back in case the client wants to do something with it
+        res.json(photo);
+      });
       
-      //send the deleted photo back in case the client wants to do something with it
-      photo.remove();
-      res.json(photo);
-      console.log("Removed photo with _id:"+req.body.id);
     }).catch(err => {
       console.log(err);
     });
